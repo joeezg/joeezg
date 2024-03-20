@@ -1,0 +1,606 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Gives 3 solutions to the wave equation d2y/dt2=[c^2 d2y/dx2 ] + s</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-03-20">
+<meta name="DC.source" content="NumericalApproximation_WaveEqt.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Gives 3 solutions to the wave equation d2y/dt2=[c^2 d2y/dx2 ] + s</h1>
+<!--introduction-->
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Boundary conditions are f(x, 0) = sin(x)</a>
+</li>
+<li>
+<a href="#2">f'(x, 0) = cos(x), f'(0, t) = f'(2pi, t) = cos(ct)</a>
+</li>
+<li>
+<a href="#3">y(0, t) = y(2pi, t) = -sin(ct) + s(t^2)/2</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Boundary conditions are f(x, 0) = sin(x)</h2>
+<h2 id="2">f'(x, 0) = cos(x), f'(0, t) = f'(2pi, t) = cos(ct)</h2>
+<h2 id="3">y(0, t) = y(2pi, t) = -sin(ct) + s(t^2)/2</h2>
+<pre class="codeinput">clear <span class="string">all</span>;
+clc
+clear
+
+mew = 1;
+s = 0.5;
+<span class="comment">% number of grid points in the x direction i=1 at x=0, i=N at x=L</span>
+N=17;
+Nt=9;  <span class="comment">% number of time steps</span>
+
+L=2*pi;   <span class="comment">% length of string</span>
+c=sqrt(3);
+deltax=L/(N-1);
+deltat=deltax/c;    <span class="comment">% ensures c x deltat = deltax</span>
+
+
+<span class="comment">% initialise the arrays</span>
+yexact=zeros(N,Nt);    <span class="comment">% analytical solution</span>
+
+<span class="comment">% Finite Difference numerical solution using integrated form of</span>
+<span class="comment">% analytical solution for first time step</span>
+yFD=zeros(N,Nt);
+
+<span class="comment">% Characteristic numerical solutions</span>
+ychar1=zeros(N,Nt);
+ychar2=zeros(N,Nt);
+
+<span class="comment">% arrays of p=dy/dx and q=dy/dt</span>
+p=zeros(N,Nt);
+q=zeros(N,Nt);
+
+<span class="comment">% create the arrays y(x,0)=f(x) and dy/dt(x,0)=g(x)</span>
+x=zeros(N,1);
+t=zeros(Nt,1);
+f=zeros(N,1);
+g=zeros(N,1);
+
+<span class="keyword">for</span> i=1:N
+    x(i)=(L*(i-1))/(N-1);
+    g(i)=-c*cos(x(i));
+    q(i,1)=g(i);
+    p(i,1)=cos(x(i));
+    ychar1(i, 1) = sin(x(i));
+    ychar2(i, 1) = sin(x(i));
+<span class="keyword">end</span>
+
+<span class="comment">% set times for integration and boundary conditions at x=0, x=L</span>
+time=0.0;
+<span class="keyword">for</span> j=1:Nt
+    t(j)=time;
+    yFD(1,j)=-sin(c*t(j))+(0.5*s*((t(j)^2)));
+    yFD(N,j)=yFD(1, j);
+    ychar1(1,j)=yFD(1, j);
+    ychar1(N,j)=yFD(1, j);
+    ychar2(1,j)=yFD(1, j);
+    ychar2(N,j)=yFD(1, j);
+    q(1,j)=-c*cos(c*t(j))+s*t(j);
+    q(N,j)=q(1,j);
+    p(1,j)=cos(c*time);
+    p(N,j)=p(1,j);
+    time=time+deltat;
+<span class="keyword">end</span>
+</pre>
+<p>set the analytical solution and set the intitial values of y1, y2</p>
+<pre class="codeinput">
+<span class="keyword">for</span> i=1:N
+    yFD(i,1)=sin(x(i));
+    <span class="keyword">for</span> j=1:Nt
+        yexact(i,j)= sin(x(i)-c*t(j))+0.5*s*(t(j))^2;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% now calculate y at the end of the first time step (j=2) using the</span>
+<span class="comment">% simpson rule approach to starting the time integration</span>
+<span class="keyword">for</span> i=2:N-1
+    yFD(i,2)=0.5*mew*(yFD(i+1, 1)+yFD(i-1, 1))+<span class="keyword">...</span>
+        yFD(i, 1)*(1-mew)+0.5*s*(deltat)^2-deltat*c*cos(x(i));
+<span class="keyword">end</span>
+</pre>
+<pre class="codeinput">
+<span class="comment">% calculate p=dy/dx and q=dy/dt throughout the grid</span>
+<span class="keyword">for</span> j=1:Nt-1
+    <span class="keyword">for</span> i=2:N-1
+        p(i,j+1)=((1/(2*sqrt(3)))*(q(i+1,j)-q(i-1,j)))+<span class="keyword">...</span>
+            0.5*(p(i-1,j)+p(i+1,j));
+        q(i,j+1)=(sqrt(3)/2)*(p(i+1,j)-p(i-1,j))+<span class="keyword">...</span>
+            0.5*(q(i-1,j)+q(i+1,j))+0.5*deltat;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% perform integration along characteristics</span>
+<span class="keyword">for</span> j=1:Nt-1
+    <span class="keyword">for</span> i=2:N-1
+        ychar1(i,j+1)=ychar1(i-1,j)+0.5*(p(i,j+1)+p(i-1,j))*deltax +<span class="keyword">...</span>
+            0.5*(q(i,j+1)+q(i-1,j))*deltat;
+        ychar2(i,j+1)=ychar2(i+1,j)-0.5*(p(i,j+1)+p(i+1,j))*deltax +<span class="keyword">...</span>
+            0.5*(q(i,j+1)+q(i+1,j))*deltat;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% now integrate in time using for formula valid for deltax = c*deltat</span>
+<span class="comment">% NB j=1 corresponds to the initial conditions at t=0.</span>
+<span class="keyword">for</span> j=2:Nt-1
+    <span class="keyword">for</span> i=2:N-1
+        yFD(i,j+1)=mew*(yFD(i+1,j)+yFD(i-1, j))+<span class="keyword">...</span>
+            2*yFD(i, j)*(1-mew)+s*(deltat)^2-yFD(i, j-1);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+
+
+<span class="comment">% plot animation of explicit solution yFD(x,t) in comparison</span>
+<span class="comment">% with analytical solution</span>
+figure(1);
+<span class="keyword">for</span> n=1:Nt
+
+    figure(1);
+    clf;
+    plot(x, yFD(:,n), <span class="string">'b'</span>); hold <span class="string">on</span>;
+    <span class="comment">% plot(x, yimp(:,n), 'r'); hold on;</span>
+    plot(x, yexact(:,n), <span class="string">'k'</span>); hold <span class="string">on</span>;
+    xlim([x(1), x(end)]);
+    ylim([-2.0, 2.0]);
+    xlabel(<span class="string">'x'</span>);
+    ylabel(<span class="string">'y'</span>);
+    txt = strcat([<span class="string">'Explicit FD (red) and Analytical (black)'</span> <span class="keyword">...</span>
+        <span class="string">' solutions up to t='</span>],num2str((Nt-1)*deltat, <span class="string">'%3.2f'</span>));
+    text(0.1*L, 1.8, txt);
+
+    drawnow;
+<span class="keyword">end</span>
+
+<span class="comment">% plot animation of characteristic solution ychar1(x,t)</span>
+<span class="comment">% in comparison with analytical solution</span>
+figure(2);
+<span class="keyword">for</span> n=1:Nt
+
+    figure(2);
+    clf;
+    <span class="comment">%plot(x, yexp(:,n), 'b'); hold on;</span>
+    plot(x, ychar1(:,n), <span class="string">'r'</span>); hold <span class="string">on</span>;
+    plot(x, yexact(:,n), <span class="string">'k'</span>); hold <span class="string">on</span>;
+    xlim([x(1), x(end)]);
+    ylim([-2.0, 2.0]);
+    xlabel(<span class="string">'x'</span>);
+    ylabel(<span class="string">'y'</span>);
+    txt = strcat([<span class="string">'Characteristic (red) and Analytical'</span> <span class="keyword">...</span>
+        <span class="string">'(black) solutions up to t='</span>],num2str((Nt-1)*deltat, <span class="string">'%3.2f'</span>));
+    text(0.1*L, 1.8, txt);
+
+    drawnow;
+<span class="keyword">end</span>
+
+<span class="comment">% plot animation of characteristic solution</span>
+<span class="comment">% ychar2(x,t) in comparison with analytical solution</span>
+figure(3);
+<span class="keyword">for</span> n=1:Nt
+
+    figure(3);
+    clf;
+    <span class="comment">%plot(x, yexp(:,n), 'b'); hold on;</span>
+    plot(x, ychar2(:,n), <span class="string">'r'</span>); hold <span class="string">on</span>;
+    plot(x, yexact(:,n), <span class="string">'k'</span>); hold <span class="string">on</span>;
+    xlim([x(1), x(end)]);
+    ylim([-2.0, 2.0]);
+    xlabel(<span class="string">'x'</span>);
+    ylabel(<span class="string">'y'</span>);
+    txt = strcat([<span class="string">'Characteristic (red) and Analytical'</span> <span class="keyword">...</span>
+        <span class="string">' (black) solutions up to t='</span>],num2str((Nt-1)*deltat, <span class="string">'%3.2f'</span>));
+    text(0.1*L, 1.8, txt);
+
+    drawnow;
+<span class="keyword">end</span>
+
+<span class="comment">% print out numerical solution to text files</span>
+fid=fopen(<span class="string">'characteristicwavetest.d'</span>,<span class="string">'w'</span>);
+fprintf(fid,<span class="string">'analytical solution after two time steps t= %6.3f \n'</span>, t(3));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f yexact=%10.6f \n'</span>,x(i),yexact(i,3));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Finite Difference numerical solution after two time steps t= %6.3f \n'</span>, t(3));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f yFD=%10.6f \n'</span>,x(i),yFD(i,3));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Characteristic solution 1 after two time steps t= %6.3f \n'</span>, t(3));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f ychar1=%10.6f \n'</span>,x(i),ychar1(i,3));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Characteristic solution 2 after two time steps t= %6.3f \n'</span>, t(3));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f ychar2=%10.6f \n'</span>,x(i),ychar2(i,3));
+<span class="keyword">end</span>
+
+fprintf(fid,<span class="string">'analytical solution after four time steps t= %6.3f \n'</span>, t(5));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f yexact=%10.6f \n'</span>,x(i),yexact(i,5));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Finite Difference numerical solution after four time steps t= %6.3f \n'</span>, t(5));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f yFD%10.6f \n'</span>,x(i),yFD(i,5));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Characteristic solution 1 after four time steps t= %6.3f \n'</span>, t(5));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f ychar1=%10.6f \n'</span>,x(i),ychar1(i,5));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Characteristic solution 2 after four time steps t= %6.3f \n'</span>, t(5));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f ychar2=%10.6f \n'</span>,x(i),ychar2(i,5));
+<span class="keyword">end</span>
+
+
+fprintf(fid,<span class="string">'analytical solution after six time steps t= %6.3f \n'</span>, t(7));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f yexact=%10.6f \n'</span>,x(i),yexact(i,7));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Finite Difference numerical solution after six time steps t= %6.3f \n'</span>, t(7));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f yFD%10.6f \n'</span>,x(i),yFD(i,7));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Characteristic solution 1 after six time steps t= %6.3f \n'</span>, t(7));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f ychar1=%10.6f \n'</span>,x(i),ychar1(i,7));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Characteristic solution 2 after six time steps t= %6.3f \n'</span>, t(7));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f ychar2=%10.6f \n'</span>,x(i),ychar2(i,7));
+<span class="keyword">end</span>
+
+fprintf(fid,<span class="string">'analytical solution after eight time steps t= %6.3f \n'</span>, t(9));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f yexact=%10.6f \n'</span>,x(i),yexact(i,9));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Finite Difference numerical solution after eight time steps t= %6.3f \n'</span>, t(9));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f yFD%10.6f \n'</span>,x(i),yFD(i,9));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Characteristic solution 1 after eight time steps t= %6.3f \n'</span>, t(9));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f ychar1=%10.6f \n'</span>,x(i),ychar1(i,9));
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'Characteristic solution 2 after eight time steps t= %6.3f \n'</span>, t(9));
+<span class="keyword">for</span> i=1:N
+    fprintf(fid,<span class="string">'x= %10.6f ychar2=%10.6f \n'</span>,x(i),ychar2(i,9));
+<span class="keyword">end</span>
+fclose(fid);
+</pre>
+<img vspace="5" hspace="5" src="NumericalApproximation_WaveEqt_01.png" alt=""> <img vspace="5" hspace="5" src="NumericalApproximation_WaveEqt_02.png" alt=""> <img vspace="5" hspace="5" src="NumericalApproximation_WaveEqt_03.png" alt=""> <p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Gives 3 solutions to the wave equation d2y/dt2=[c^2 d2y/dx2 ] + s 
+%% Boundary conditions are f(x, 0) = sin(x)
+%% f'(x, 0) = cos(x), f'(0, t) = f'(2pi, t) = cos(ct)
+%% y(0, t) = y(2pi, t) = -sin(ct) + s(t^2)/2
+
+clear all;
+clc
+clear 
+
+mew = 1;
+s = 0.5;
+% number of grid points in the x direction i=1 at x=0, i=N at x=L
+N=17;   
+Nt=9;  % number of time steps
+
+L=2*pi;   % length of string
+c=sqrt(3);
+deltax=L/(N-1);
+deltat=deltax/c;    % ensures c x deltat = deltax
+
+
+% initialise the arrays
+yexact=zeros(N,Nt);    % analytical solution
+
+% Finite Difference numerical solution using integrated form of 
+% analytical solution for first time step
+yFD=zeros(N,Nt);
+
+% Characteristic numerical solutions
+ychar1=zeros(N,Nt);
+ychar2=zeros(N,Nt);
+
+% arrays of p=dy/dx and q=dy/dt
+p=zeros(N,Nt);
+q=zeros(N,Nt);
+
+% create the arrays y(x,0)=f(x) and dy/dt(x,0)=g(x)
+x=zeros(N,1);
+t=zeros(Nt,1);
+f=zeros(N,1);
+g=zeros(N,1);
+
+for i=1:N
+    x(i)=(L*(i-1))/(N-1);
+    g(i)=-c*cos(x(i));
+    q(i,1)=g(i);
+    p(i,1)=cos(x(i));
+    ychar1(i, 1) = sin(x(i));
+    ychar2(i, 1) = sin(x(i));
+end
+
+% set times for integration and boundary conditions at x=0, x=L
+time=0.0;
+for j=1:Nt
+    t(j)=time;
+    yFD(1,j)=-sin(c*t(j))+(0.5*s*((t(j)^2)));
+    yFD(N,j)=yFD(1, j);
+    ychar1(1,j)=yFD(1, j);
+    ychar1(N,j)=yFD(1, j);
+    ychar2(1,j)=yFD(1, j);  
+    ychar2(N,j)=yFD(1, j);  
+    q(1,j)=-c*cos(c*t(j))+s*t(j);
+    q(N,j)=q(1,j);
+    p(1,j)=cos(c*time);
+    p(N,j)=p(1,j);
+    time=time+deltat;
+end
+
+%%
+% set the analytical solution and set the intitial values of y1, y2
+for i=1:N
+    yFD(i,1)=sin(x(i));
+    for j=1:Nt
+        yexact(i,j)= sin(x(i)-c*t(j))+0.5*s*(t(j))^2;
+    end
+end
+
+% now calculate y at the end of the first time step (j=2) using the 
+% simpson rule approach to starting the time integration
+for i=2:N-1
+    yFD(i,2)=0.5*mew*(yFD(i+1, 1)+yFD(i-1, 1))+...
+        yFD(i, 1)*(1-mew)+0.5*s*(deltat)^2-deltat*c*cos(x(i));
+end
+%%
+
+% calculate p=dy/dx and q=dy/dt throughout the grid
+for j=1:Nt-1
+    for i=2:N-1
+        p(i,j+1)=((1/(2*sqrt(3)))*(q(i+1,j)-q(i-1,j)))+...
+            0.5*(p(i-1,j)+p(i+1,j));
+        q(i,j+1)=(sqrt(3)/2)*(p(i+1,j)-p(i-1,j))+...
+            0.5*(q(i-1,j)+q(i+1,j))+0.5*deltat;
+    end
+end
+
+% perform integration along characteristics
+for j=1:Nt-1
+    for i=2:N-1
+        ychar1(i,j+1)=ychar1(i-1,j)+0.5*(p(i,j+1)+p(i-1,j))*deltax +...
+            0.5*(q(i,j+1)+q(i-1,j))*deltat;
+        ychar2(i,j+1)=ychar2(i+1,j)-0.5*(p(i,j+1)+p(i+1,j))*deltax +...
+            0.5*(q(i,j+1)+q(i+1,j))*deltat;
+    end
+end
+
+% now integrate in time using for formula valid for deltax = c*deltat
+% NB j=1 corresponds to the initial conditions at t=0.
+for j=2:Nt-1
+    for i=2:N-1
+        yFD(i,j+1)=mew*(yFD(i+1,j)+yFD(i-1, j))+...
+            2*yFD(i, j)*(1-mew)+s*(deltat)^2-yFD(i, j-1);
+    end
+end
+
+
+
+% plot animation of explicit solution yFD(x,t) in comparison 
+% with analytical solution
+figure(1);
+for n=1:Nt
+    
+    figure(1);
+    clf;
+    plot(x, yFD(:,n), 'b'); hold on;
+    % plot(x, yimp(:,n), 'r'); hold on;    
+    plot(x, yexact(:,n), 'k'); hold on;    
+    xlim([x(1), x(end)]);
+    ylim([-2.0, 2.0]);
+    xlabel('x');
+    ylabel('y');
+    txt = strcat(['Explicit FD (red) and Analytical (black)' ...
+        ' solutions up to t='],num2str((Nt-1)*deltat, '%3.2f'));
+    text(0.1*L, 1.8, txt);
+
+    drawnow;
+end
+
+% plot animation of characteristic solution ychar1(x,t) 
+% in comparison with analytical solution
+figure(2);
+for n=1:Nt
+    
+    figure(2);
+    clf;
+    %plot(x, yexp(:,n), 'b'); hold on;
+    plot(x, ychar1(:,n), 'r'); hold on;    
+    plot(x, yexact(:,n), 'k'); hold on;    
+    xlim([x(1), x(end)]);
+    ylim([-2.0, 2.0]);
+    xlabel('x');
+    ylabel('y');
+    txt = strcat(['Characteristic (red) and Analytical' ...
+        '(black) solutions up to t='],num2str((Nt-1)*deltat, '%3.2f'));
+    text(0.1*L, 1.8, txt);
+
+    drawnow;
+end
+
+% plot animation of characteristic solution 
+% ychar2(x,t) in comparison with analytical solution
+figure(3);
+for n=1:Nt
+    
+    figure(3);
+    clf;
+    %plot(x, yexp(:,n), 'b'); hold on;
+    plot(x, ychar2(:,n), 'r'); hold on;    
+    plot(x, yexact(:,n), 'k'); hold on;    
+    xlim([x(1), x(end)]);
+    ylim([-2.0, 2.0]);
+    xlabel('x');
+    ylabel('y');
+    txt = strcat(['Characteristic (red) and Analytical' ...
+        ' (black) solutions up to t='],num2str((Nt-1)*deltat, '%3.2f'));
+    text(0.1*L, 1.8, txt);
+
+    drawnow;
+end
+
+% print out numerical solution to text files
+fid=fopen('characteristicwavetest.d','w');
+fprintf(fid,'analytical solution after two time steps t= %6.3f \n', t(3));
+for i=1:N
+    fprintf(fid,'x= %10.6f yexact=%10.6f \n',x(i),yexact(i,3));
+end
+fprintf(fid,'Finite Difference numerical solution after two time steps t= %6.3f \n', t(3));
+for i=1:N
+    fprintf(fid,'x= %10.6f yFD=%10.6f \n',x(i),yFD(i,3));
+end
+fprintf(fid,'Characteristic solution 1 after two time steps t= %6.3f \n', t(3));
+for i=1:N
+    fprintf(fid,'x= %10.6f ychar1=%10.6f \n',x(i),ychar1(i,3));
+end
+fprintf(fid,'Characteristic solution 2 after two time steps t= %6.3f \n', t(3));
+for i=1:N
+    fprintf(fid,'x= %10.6f ychar2=%10.6f \n',x(i),ychar2(i,3));
+end
+
+fprintf(fid,'analytical solution after four time steps t= %6.3f \n', t(5));
+for i=1:N
+    fprintf(fid,'x= %10.6f yexact=%10.6f \n',x(i),yexact(i,5));
+end
+fprintf(fid,'Finite Difference numerical solution after four time steps t= %6.3f \n', t(5));
+for i=1:N
+    fprintf(fid,'x= %10.6f yFD%10.6f \n',x(i),yFD(i,5));
+end
+fprintf(fid,'Characteristic solution 1 after four time steps t= %6.3f \n', t(5));
+for i=1:N
+    fprintf(fid,'x= %10.6f ychar1=%10.6f \n',x(i),ychar1(i,5));
+end
+fprintf(fid,'Characteristic solution 2 after four time steps t= %6.3f \n', t(5));
+for i=1:N
+    fprintf(fid,'x= %10.6f ychar2=%10.6f \n',x(i),ychar2(i,5));
+end
+
+
+fprintf(fid,'analytical solution after six time steps t= %6.3f \n', t(7));
+for i=1:N
+    fprintf(fid,'x= %10.6f yexact=%10.6f \n',x(i),yexact(i,7));
+end
+fprintf(fid,'Finite Difference numerical solution after six time steps t= %6.3f \n', t(7));
+for i=1:N
+    fprintf(fid,'x= %10.6f yFD%10.6f \n',x(i),yFD(i,7));
+end
+fprintf(fid,'Characteristic solution 1 after six time steps t= %6.3f \n', t(7));
+for i=1:N
+    fprintf(fid,'x= %10.6f ychar1=%10.6f \n',x(i),ychar1(i,7));
+end
+fprintf(fid,'Characteristic solution 2 after six time steps t= %6.3f \n', t(7));
+for i=1:N
+    fprintf(fid,'x= %10.6f ychar2=%10.6f \n',x(i),ychar2(i,7));
+end
+
+fprintf(fid,'analytical solution after eight time steps t= %6.3f \n', t(9));
+for i=1:N
+    fprintf(fid,'x= %10.6f yexact=%10.6f \n',x(i),yexact(i,9));
+end
+fprintf(fid,'Finite Difference numerical solution after eight time steps t= %6.3f \n', t(9));
+for i=1:N
+    fprintf(fid,'x= %10.6f yFD%10.6f \n',x(i),yFD(i,9));
+end
+fprintf(fid,'Characteristic solution 1 after eight time steps t= %6.3f \n', t(9));
+for i=1:N
+    fprintf(fid,'x= %10.6f ychar1=%10.6f \n',x(i),ychar1(i,9));
+end
+fprintf(fid,'Characteristic solution 2 after eight time steps t= %6.3f \n', t(9));
+for i=1:N
+    fprintf(fid,'x= %10.6f ychar2=%10.6f \n',x(i),ychar2(i,9));
+end
+fclose(fid);
+##### SOURCE END #####
+-->
+</body>
+</html>
