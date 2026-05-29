@@ -1,5 +1,4 @@
-### 01100001 00100000 01110111 01101111 01110010 01101100 01100100 00100000 01101111 01100110 00100000 01101000 01100101 01101100 01101100 01101111 01110011 !
-
+### Welcome.
 
 <!--
 **joeezg/joeezg** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
